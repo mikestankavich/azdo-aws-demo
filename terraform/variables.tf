@@ -72,11 +72,6 @@ variable "azdo_personal_access_token" {
   }
 }
 
-variable "azdo_org_name" {
-  description = "Azure DevOps organization name (extracted from URL)"
-  type        = string
-}
-
 variable "azdo_project_bootstrap" {
   description = "Name of the bootstrap infrastructure project"
   type        = string

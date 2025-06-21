@@ -65,7 +65,6 @@ resource "random_string" "suffix" {
 locals {
   # Common resource naming
   name_prefix = "${var.project_name}-${var.environment}"
-  common_name = "${local.name_prefix}-${random_string.suffix.result}"
 
   # Resource tags
   common_tags = {

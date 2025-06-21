@@ -27,7 +27,6 @@ azure-devops-credentials
 .idea/
 *.swp
 *.swo
-*~
 
 # macOS
 .DS_Store
@@ -76,11 +75,6 @@ dist/
 # Coverage reports
 coverage/
 *.coverage
-
-# OS generated files
-*.pid
-*.seed
-*.pid.lock
 
 # Runtime data
 pids/
