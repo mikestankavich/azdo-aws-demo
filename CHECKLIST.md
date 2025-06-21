@@ -15,46 +15,45 @@
 - [x] Initial commit with foundational documentation
 
 ### Account Creation (can be done in parallel)
-- [ ] Create new AWS account
-- [ ] Enable billing alerts and set spending limits
-- [ ] Create Azure DevOps account/organization
-- [ ] Create Terraform Cloud account
-- [ ] Purchase domain (optional but recommended)
+- [x] Create new AWS account
+- [x] Enable billing alerts and set spending limits
+- [x] Create Azure DevOps account/organization
+- [x] Create Terraform Cloud account
+- [x] Purchase domain (optional but recommended)
 
 ### Development Environment
-- [ ] Install required tools (just, direnv, terraform, aws cli)
-- [ ] Create `.env.local.example` file
-- [ ] Create `.env.local` with actual values
-- [ ] Create `justfile` with automation commands
-- [ ] Create `.gitignore` for sensitive files
-- [ ] Test `direnv` integration
+- [x] Install required tools (just, direnv, terraform, aws cli)
+- [x] Create `.env.local.example` file
+- [x] Create `.env.local` with actual values
+- [x] Create `justfile` with automation commands
+- [x] Create `.gitignore` for sensitive files
+- [x] Test `direnv` integration
 
 ### Terraform Cloud Setup
-- [ ] Create organization in Terraform Cloud
-- [ ] Create workspace: `account-provisioning`
-- [ ] Connect workspace to GitHub repository
-- [ ] Configure workspace settings (execution mode, etc.)
+- [x] Create organization in Terraform Cloud
+- [x] Create workspace: `account-provisioning`
+- [x] Connect workspace to GitHub repository
+- [x] Configure workspace settings (execution mode, etc.)
 
 ## Phase 0: Foundation Setup (30 minutes)
 
 ### AWS Initial Setup
-- [ ] Create IAM admin user with programmatic access
-- [ ] Generate access keys
-- [ ] Test AWS CLI connectivity: `aws sts get-caller-identity`
-- [ ] Add AWS credentials to Terraform Cloud as environment variables
+- [x] Create IAM admin user with programmatic access
+- [x] Generate access keys
+- [x] Test AWS CLI connectivity: `aws sts get-caller-identity`
+- [x] Add AWS credentials to Terraform Cloud as environment variables
 
 ### Azure DevOps Initial Setup
-- [ ] Create Personal Access Token (full access)
-- [ ] Test Azure DevOps CLI/API connectivity
-- [ ] Add Azure DevOps credentials to Terraform Cloud
+- [x] Create Personal Access Token (full access)
+- [x] Test Azure DevOps CLI/API connectivity
+- [x] Add Azure DevOps credentials to Terraform Cloud
 
 ### Terraform Infrastructure
-- [ ] Write `terraform/main.tf` with cloud backend configuration
-- [ ] Write `terraform/variables.tf` with input variables
-- [ ] Write `terraform/aws-iam.tf` for service roles
-- [ ] Write `terraform/azure-devops.tf` for project creation
-- [ ] Write `terraform/state-backend.tf` for S3/DynamoDB
-- [ ] Write `terraform/outputs.tf` for important values
+- [x] Write `terraform/main.tf` with cloud backend configuration
+- [x] Write `terraform/variables.tf` with input variables
+- [x] Write `terraform/aws-iam.tf` for service roles
+- [x] Write `terraform/azure-devops.tf` for project creation
+- [x] Write `terraform/outputs.tf` for important values
 
 ### Bootstrap Execution
 - [ ] Run `just validate` - verify Terraform syntax

@@ -1,6 +1,6 @@
 # Sensitive environment files
-.env.local
-.envrc
+.env
+.env.*
 
 # Terraform files
 *.tfstate
