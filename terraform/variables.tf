@@ -75,13 +75,13 @@ variable "azdo_personal_access_token" {
 variable "azdo_project_bootstrap" {
   description = "Name of the bootstrap infrastructure project"
   type        = string
-  default     = "bootstrap-infrastructure"
+  default     = "azdo-aws-bootstrap"
 }
 
 variable "azdo_project_demo" {
   description = "Name of the demo application project"
   type        = string
-  default     = "demo-application"
+  default     = "azdo-aws-app-demo"
 }
 
 # =============================================================================

@@ -92,8 +92,8 @@ output "next_steps" {
     step_5 = "Continue with shared modules and demo application development"
 
     repositories = {
-      bootstrap_repo = "${var.azdo_org_service_url}/${azuredevops_project.bootstrap.name}/_git/${azuredevops_git_repository.bootstrap_repo.name}"
-      demo_repo      = "${var.azdo_org_service_url}/${azuredevops_project.demo.name}/_git/${azuredevops_git_repository.demo_repo.name}"
+      bootstrap_repo = "${var.azdo_org_service_url}/${azuredevops_project.bootstrap.name}/_git/${data.azuredevops_git_repository.bootstrap_repo.name}"
+      demo_repo      = "${var.azdo_org_service_url}/${azuredevops_project.demo.name}/_git/${data.azuredevops_git_repository.demo_repo.name}"
     }
 
     service_connections = {

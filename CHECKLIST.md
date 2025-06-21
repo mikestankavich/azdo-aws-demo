@@ -33,7 +33,9 @@
 - [x] Create organization in Terraform Cloud
 - [x] Create workspace: `account-provisioning`
 - [x] Connect workspace to GitHub repository
-- [x] Configure workspace settings (execution mode, etc.)
+- [x] Configure workspace settings (LOCAL execution mode, cloud state storage)
+- [x] Run `terraform login` to authenticate CLI
+- [x] Update organization name in terraform/main.tf
 
 ## Phase 0: Foundation Setup (30 minutes)
 
@@ -41,12 +43,10 @@
 - [x] Create IAM admin user with programmatic access
 - [x] Generate access keys
 - [x] Test AWS CLI connectivity: `aws sts get-caller-identity`
-- [x] Add AWS credentials to Terraform Cloud as environment variables
 
 ### Azure DevOps Initial Setup
 - [x] Create Personal Access Token (full access)
 - [x] Test Azure DevOps CLI/API connectivity
-- [x] Add Azure DevOps credentials to Terraform Cloud
 
 ### Terraform Infrastructure
 - [x] Write `terraform/main.tf` with cloud backend configuration
@@ -54,29 +54,49 @@
 - [x] Write `terraform/aws-iam.tf` for service roles
 - [x] Write `terraform/azure-devops.tf` for project creation
 - [x] Write `terraform/outputs.tf` for important values
+- [x] Add TF_VAR_ environment variable mappings to .env.local
 
 ### Bootstrap Execution
-- [ ] Run `just validate` - verify Terraform syntax
-- [ ] Run `just plan` - review planned changes
-- [ ] Run `just bootstrap` - execute provisioning
-- [ ] Verify AWS IAM roles created
-- [ ] Verify Azure DevOps projects created
-- [ ] Verify S3 state backend accessible
+- [x] Run `just setup` - initialize Terraform and download providers
+- [x] Run `just validate` - verify Terraform syntax
+- [x] Run `just plan` - review planned changes
+- [x] Run `just bootstrap` - execute provisioning
+- [x] Verify AWS IAM roles created
+- [x] Verify Azure DevOps projects created
 - [ ] Run `just status` - confirm healthy infrastructure
+
+### Pre-Bootstrap Completion Verification
+- [x] Verify 3 IAM roles created in AWS Console:
+    - [x] azdo-terraform-role (admin permissions)
+    - [x] azdo-deployment-role (limited ECS/ECR permissions)
+    - [x] azdo-readonly-role (read-only access)
+- [x] Verify 2 Azure DevOps projects created:
+    - [x] azdo-demo-bootstrap (with git repo and pipeline)
+    - [x] azdo-demo-app-demo (with git repo)
+- [x] Verify bootstrap pipeline exists and is ready to run
+- [x] Document IAM role ARNs and external ID for service connections
 
 ### Clean Up Initial Admin
 - [ ] Delete temporary AWS admin user
 - [ ] Verify Azure DevOps can still access AWS via service roles
 - [ ] Document service connection details
 
+### Handoff to Azure DevOps
+- [ ] Clone azdo-demo-bootstrap repository locally
+- [ ] Clone azdo-demo-app-demo repository locally
+- [ ] Create service connections in Azure DevOps using IAM role ARNs
+- [ ] Add initial Terraform code to azdo-demo-bootstrap
+- [ ] Run bootstrap pipeline to create state backend and shared modules
+
 ## Phase 1: Application Foundation (45 minutes)
 
 ### Azure DevOps Repository Setup
-- [ ] Clone `bootstrap-infrastructure` project from Azure DevOps
-- [ ] Clone `demo-application` project from Azure DevOps
+- [ ] Clone `azdo-demo-bootstrap` project from Azure DevOps
+- [ ] Clone `azdo-demo-app-demo` project from Azure DevOps
 - [ ] Set up identical development workflow (direnv, just)
 
-### Core Infrastructure (bootstrap-infrastructure)
+### Core Infrastructure (azdo-demo-bootstrap)
+- [ ] Create S3 bucket and DynamoDB table for Terraform state backend
 - [ ] Write shared VPC module
 - [ ] Write shared security group module
 - [ ] Write shared ALB module
@@ -94,7 +114,7 @@
 - [ ] Deploy ECS cluster
 - [ ] Deploy Application Load Balancer
 - [ ] Configure target groups and health checks
-- [ ] Deploy ECR repositories
+- [ ] Create ECR repositories via azdo-demo-bootstrap
 
 ### DNS and SSL
 - [ ] Configure Route 53 hosted zone
@@ -110,7 +130,7 @@
 
 ## Phase 2: CI/CD Pipeline (60 minutes)
 
-### Basic Pipeline Setup (demo-application)
+### Basic Pipeline Setup (azdo-demo-app-demo)
 - [ ] Create initial `azure-pipelines.yml`
 - [ ] Configure AWS service connection in Azure DevOps
 - [ ] Configure variable groups for environments
@@ -188,33 +208,6 @@
 - [ ] Configure test failure rollback
 - [ ] Verify end-to-end application flow
 
-## Phase 5: Content Creation and Portfolio Enhancement
-
-### Technical Blog Article
-- [ ] Write comprehensive blog post for mikestankavich.com
-- [ ] Include architecture diagrams and code snippets
-- [ ] Cover platform engineering vision and enterprise patterns
-- [ ] Optimize for technical audience and SEO
-
-### Video Content Creation
-- [ ] Write script for technical walkthrough video
-- [ ] Record Loom demo video (10-15 minutes)
-- [ ] Create shorter LinkedIn/social media highlight reel (2-3 minutes)
-- [ ] Optional: Record YouTube deep-dive (20-30 minutes)
-
-### Content Distribution
-- [ ] Publish blog article on mikestankavich.com
-- [ ] Share blog post on LinkedIn with project context
-- [ ] Post video content with technical insights
-- [ ] Update GitHub repository with content links
-- [ ] Add project summary to resume/portfolio
-
-### Professional Presentation
-- [ ] Prepare elevator pitch for project (30 seconds)
-- [ ] Create technical talking points for interviews
-- [ ] Document lessons learned and potential improvements
-- [ ] Prepare platform engineering vision discussion points
-
 ## Phase 4: Advanced Features (time permitting)
 
 ### Secrets Management
@@ -241,6 +234,33 @@
 - [ ] Record demo video (5-10 minutes)
 - [ ] Create architecture diagrams
 - [ ] Document troubleshooting procedures
+
+## Phase 5: Content Creation and Portfolio Enhancement
+
+### Technical Blog Article
+- [ ] Write comprehensive blog post for mikestankavich.com
+- [ ] Include architecture diagrams and code snippets
+- [ ] Cover platform engineering vision and enterprise patterns
+- [ ] Optimize for technical audience and SEO
+
+### Video Content Creation
+- [ ] Write script for technical walkthrough video
+- [ ] Record Loom demo video (10-15 minutes)
+- [ ] Create shorter LinkedIn/social media highlight reel (2-3 minutes)
+- [ ] Optional: Record YouTube deep-dive (20-30 minutes)
+
+### Content Distribution
+- [ ] Publish blog article on mikestankavich.com
+- [ ] Share blog post on LinkedIn with project context
+- [ ] Post video content with technical insights
+- [ ] Update GitHub repository with content links
+- [ ] Add project summary to resume/portfolio
+
+### Professional Presentation
+- [ ] Prepare elevator pitch for project (30 seconds)
+- [ ] Create technical talking points for interviews
+- [ ] Document lessons learned and potential improvements
+- [ ] Prepare platform engineering vision discussion points
 
 ## Final Validation and Cleanup
 

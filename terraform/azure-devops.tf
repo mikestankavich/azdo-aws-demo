@@ -40,27 +40,19 @@ resource "azuredevops_project" "demo" {
 }
 
 # =============================================================================
-# Initial Repositories
+# Git Repositories (Use Auto-Created Default Repositories)
 # =============================================================================
 
-# Bootstrap repository for shared modules
-resource "azuredevops_git_repository" "bootstrap_repo" {
+# Reference the default repository created automatically with the bootstrap project
+data "azuredevops_git_repository" "bootstrap_repo" {
   project_id = azuredevops_project.bootstrap.id
-  name       = var.azdo_project_bootstrap
-
-  initialization {
-    init_type = "Clean"
-  }
+  name       = azuredevops_project.bootstrap.name
 }
 
-# Demo application repository
-resource "azuredevops_git_repository" "demo_repo" {
+# Reference the default repository created automatically with the demo project
+data "azuredevops_git_repository" "demo_repo" {
   project_id = azuredevops_project.demo.id
-  name       = var.azdo_project_demo
-
-  initialization {
-    init_type = "Clean"
-  }
+  name       = azuredevops_project.demo.name
 }
 
 # =============================================================================
@@ -139,8 +131,8 @@ resource "azuredevops_build_definition" "bootstrap_pipeline" {
 
   repository {
     repo_type   = "TfsGit"
-    repo_id     = azuredevops_git_repository.bootstrap_repo.id
-    branch_name = azuredevops_git_repository.bootstrap_repo.default_branch
+    repo_id     = data.azuredevops_git_repository.bootstrap_repo.id
+    branch_name = data.azuredevops_git_repository.bootstrap_repo.default_branch
     yml_path    = "pipelines/bootstrap-foundation.yml"
   }
 

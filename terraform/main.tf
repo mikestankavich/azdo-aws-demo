@@ -6,7 +6,7 @@ terraform {
 
   # Terraform Cloud backend configuration
   cloud {
-    organization = "your-tf-cloud-org"  # Replace with your actual org name
+    organization = "mikestankavich"
 
     workspaces {
       name = "account-provisioning"

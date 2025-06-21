@@ -17,37 +17,28 @@ resource "random_string" "external_id" {
 # IAM Role for Terraform Operations
 # =============================================================================
 
-# Trust policy for Azure DevOps Terraform operations
-data "aws_iam_policy_document" "azdo_terraform_trust" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
-    }
-
-    actions = ["sts:AssumeRole"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "sts:ExternalId"
-      values   = [random_string.external_id.result]
-    }
-
-    condition {
-      test     = "StringLike"
-      variable = "aws:RequestedRegion"
-      values   = [var.aws_region]
-    }
-  }
-}
-
 # IAM role for Terraform operations (broad permissions for infrastructure management)
 resource "aws_iam_role" "azdo_terraform" {
   name                = "${local.name_prefix}-terraform-role"
-  assume_role_policy  = data.aws_iam_policy_document.azdo_terraform_trust.json
   max_session_duration = 3600  # 1 hour
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = random_string.external_id.result
+          }
+        }
+      }
+    ]
+  })
 
   tags = merge(local.common_tags, {
     Name        = "${local.name_prefix}-terraform-role"
@@ -181,31 +172,28 @@ resource "aws_iam_role_policy" "azdo_terraform" {
 # IAM Role for Application Deployment
 # =============================================================================
 
-# Trust policy for Azure DevOps deployment operations
-data "aws_iam_policy_document" "azdo_deployment_trust" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
-    }
-
-    actions = ["sts:AssumeRole"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "sts:ExternalId"
-      values   = [random_string.external_id.result]
-    }
-  }
-}
-
 # IAM role for application deployment (limited permissions)
 resource "aws_iam_role" "azdo_deployment" {
   name                = "${local.name_prefix}-deployment-role"
-  assume_role_policy  = data.aws_iam_policy_document.azdo_deployment_trust.json
   max_session_duration = 3600
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = random_string.external_id.result
+          }
+        }
+      }
+    ]
+  })
 
   tags = merge(local.common_tags, {
     Name        = "${local.name_prefix}-deployment-role"
@@ -312,31 +300,28 @@ resource "aws_iam_role_policy" "azdo_deployment" {
 # IAM Role for Read-Only Access
 # =============================================================================
 
-# Trust policy for Azure DevOps read-only operations
-data "aws_iam_policy_document" "azdo_readonly_trust" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
-    }
-
-    actions = ["sts:AssumeRole"]
-
-    condition {
-      test     = "StringEquals"
-      variable = "sts:ExternalId"
-      values   = [random_string.external_id.result]
-    }
-  }
-}
-
 # IAM role for read-only access
 resource "aws_iam_role" "azdo_readonly" {
   name                = "${local.name_prefix}-readonly-role"
-  assume_role_policy  = data.aws_iam_policy_document.azdo_readonly_trust.json
   max_session_duration = 3600
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Action = "sts:AssumeRole"
+        Condition = {
+          StringEquals = {
+            "sts:ExternalId" = random_string.external_id.result
+          }
+        }
+      }
+    ]
+  })
 
   tags = merge(local.common_tags, {
     Name        = "${local.name_prefix}-readonly-role"
