@@ -7,7 +7,7 @@
 
 # S3 bucket for storing Terraform state files
 resource "aws_s3_bucket" "terraform_state" {
-  bucket        = "${var.project_name}-terraform-state-${random_string.suffix.result}"
+  bucket        = "${var.project_name}-terraform-state"
   force_destroy = true  # For demo cleanup
 
   tags = merge(local.common_tags, {
@@ -79,7 +79,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "terraform_state" {
 
 # DynamoDB table for Terraform state locking
 resource "aws_dynamodb_table" "terraform_lock" {
-  name           = "${var.project_name}-terraform-lock-${random_string.suffix.result}"
+  name           = "${var.project_name}-terraform-lock"
   billing_mode   = "PAY_PER_REQUEST"
   hash_key       = "LockID"
 
