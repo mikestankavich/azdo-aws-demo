@@ -53,6 +53,7 @@
 - [x] Write `terraform/variables.tf` with input variables
 - [x] Write `terraform/aws-iam.tf` for service roles
 - [x] Write `terraform/azure-devops.tf` for project creation
+- [x] Write `terraform/state-backend.tf` for S3/DynamoDB state backend
 - [x] Write `terraform/outputs.tf` for important values
 - [x] Add TF_VAR_ environment variable mappings to .env.local
 
@@ -63,7 +64,8 @@
 - [x] Run `just bootstrap` - execute provisioning
 - [x] Verify AWS IAM roles created
 - [x] Verify Azure DevOps projects created
-- [ ] Run `just status` - confirm healthy infrastructure
+- [x] Verify S3 state backend and DynamoDB lock table created
+- [x] Run `just status` - confirm healthy infrastructure
 
 ### Pre-Bootstrap Completion Verification
 - [x] Verify 3 IAM roles created in AWS Console:
@@ -76,33 +78,26 @@
 - [x] Verify bootstrap pipeline exists and is ready to run
 - [x] Document IAM role ARNs and external ID for service connections
 
-### Clean Up Initial Admin
-- [ ] Delete temporary AWS admin user
-- [ ] Verify Azure DevOps can still access AWS via service roles
-- [ ] Document service connection details
-
-### Handoff to Azure DevOps
-- [ ] Clone azdo-demo-bootstrap repository locally
-- [ ] Clone azdo-demo-app-demo repository locally
-- [ ] Create service connections in Azure DevOps using IAM role ARNs
-- [ ] Add initial Terraform code to azdo-demo-bootstrap
-- [ ] Run bootstrap pipeline to create state backend and shared modules
-
 ## Phase 1: Application Foundation (45 minutes)
 
 ### Azure DevOps Repository Setup
-- [ ] Clone `azdo-demo-bootstrap` project from Azure DevOps
-- [ ] Clone `azdo-demo-app-demo` project from Azure DevOps
+- [ ] Clone `shared-infra` project from Azure DevOps
+- [ ] Clone `demo-app` project from Azure DevOps
 - [ ] Set up identical development workflow (direnv, just)
 
-### Core Infrastructure (azdo-demo-bootstrap)
-- [ ] Create S3 bucket and DynamoDB table for Terraform state backend
-- [ ] Write shared VPC module
+### Core Infrastructure (shared-infra)
+- [ ] Configure Terraform backend to use pre-bootstrap state backend
+- [ ] Create service connections in Azure DevOps using IAM role ARNs
 - [ ] Write shared security group module
 - [ ] Write shared ALB module
 - [ ] Write shared ECS module
 - [ ] Write "enterprise S3 bucket" shared module
 - [ ] Test modules with simple deployment
+
+### Clean Up Initial Admin
+- [ ] Delete temporary AWS admin user
+- [ ] Verify Azure DevOps can still access AWS via service roles
+- [ ] Document service connection details
 
 ### Networking Foundation
 - [ ] Deploy VPC with public/private subnets
@@ -114,7 +109,7 @@
 - [ ] Deploy ECS cluster
 - [ ] Deploy Application Load Balancer
 - [ ] Configure target groups and health checks
-- [ ] Create ECR repositories via azdo-demo-bootstrap
+- [ ] Deploy ECR repositories for container images
 
 ### DNS and SSL
 - [ ] Configure Route 53 hosted zone
@@ -130,7 +125,7 @@
 
 ## Phase 2: CI/CD Pipeline (60 minutes)
 
-### Basic Pipeline Setup (azdo-demo-app-demo)
+### Basic Pipeline Setup (demo-application)
 - [ ] Create initial `azure-pipelines.yml`
 - [ ] Configure AWS service connection in Azure DevOps
 - [ ] Configure variable groups for environments

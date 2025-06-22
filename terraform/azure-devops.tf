@@ -82,11 +82,6 @@ resource "azuredevops_variable_group" "aws_shared" {
   }
 
   variable {
-    name  = "ENVIRONMENT"
-    value = var.environment
-  }
-
-  variable {
     name  = "TERRAFORM_ROLE_ARN"
     value = aws_iam_role.azdo_terraform.arn
   }

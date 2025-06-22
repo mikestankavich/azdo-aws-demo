@@ -16,17 +16,6 @@ variable "project_name" {
   }
 }
 
-variable "environment" {
-  description = "Environment name (dev, staging, prod, demo)"
-  type        = string
-  default     = "demo"
-
-  validation {
-    condition     = contains(["dev", "staging", "prod", "demo"], var.environment)
-    error_message = "Environment must be one of: dev, staging, prod, demo."
-  }
-}
-
 # =============================================================================
 # AWS Configuration
 # =============================================================================
@@ -34,7 +23,7 @@ variable "environment" {
 variable "aws_region" {
   description = "AWS region for resource deployment"
   type        = string
-  default     = "us-west-2"
+  default     = "us-east-2"
 }
 
 variable "aws_account_id" {

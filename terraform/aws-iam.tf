@@ -19,7 +19,7 @@ resource "random_string" "external_id" {
 
 # IAM role for Terraform operations (broad permissions for infrastructure management)
 resource "aws_iam_role" "azdo_terraform" {
-  name                = "${local.name_prefix}-terraform-role"
+  name                = "${var.project_name}-terraform-role"
   max_session_duration = 3600  # 1 hour
 
   assume_role_policy = jsonencode({
@@ -41,7 +41,7 @@ resource "aws_iam_role" "azdo_terraform" {
   })
 
   tags = merge(local.common_tags, {
-    Name        = "${local.name_prefix}-terraform-role"
+    Name        = "${var.project_name}-terraform-role"
     Purpose     = "terraform-operations"
     AccessLevel = "admin"
   })
@@ -163,7 +163,7 @@ data "aws_iam_policy_document" "azdo_terraform_policy" {
 }
 
 resource "aws_iam_role_policy" "azdo_terraform" {
-  name   = "${local.name_prefix}-terraform-policy"
+  name   = "${var.project_name}-terraform-policy"
   role   = aws_iam_role.azdo_terraform.id
   policy = data.aws_iam_policy_document.azdo_terraform_policy.json
 }
@@ -174,7 +174,7 @@ resource "aws_iam_role_policy" "azdo_terraform" {
 
 # IAM role for application deployment (limited permissions)
 resource "aws_iam_role" "azdo_deployment" {
-  name                = "${local.name_prefix}-deployment-role"
+  name                = "${var.project_name}-deployment-role"
   max_session_duration = 3600
 
   assume_role_policy = jsonencode({
@@ -196,7 +196,7 @@ resource "aws_iam_role" "azdo_deployment" {
   })
 
   tags = merge(local.common_tags, {
-    Name        = "${local.name_prefix}-deployment-role"
+    Name        = "${var.project_name}-deployment-role"
     Purpose     = "application-deployment"
     AccessLevel = "limited"
   })
@@ -291,7 +291,7 @@ data "aws_iam_policy_document" "azdo_deployment_policy" {
 }
 
 resource "aws_iam_role_policy" "azdo_deployment" {
-  name   = "${local.name_prefix}-deployment-policy"
+  name   = "${var.project_name}-deployment-policy"
   role   = aws_iam_role.azdo_deployment.id
   policy = data.aws_iam_policy_document.azdo_deployment_policy.json
 }
@@ -302,7 +302,7 @@ resource "aws_iam_role_policy" "azdo_deployment" {
 
 # IAM role for read-only access
 resource "aws_iam_role" "azdo_readonly" {
-  name                = "${local.name_prefix}-readonly-role"
+  name                = "${var.project_name}-readonly-role"
   max_session_duration = 3600
 
   assume_role_policy = jsonencode({
@@ -324,7 +324,7 @@ resource "aws_iam_role" "azdo_readonly" {
   })
 
   tags = merge(local.common_tags, {
-    Name        = "${local.name_prefix}-readonly-role"
+    Name        = "${var.project_name}-readonly-role"
     Purpose     = "monitoring-readonly"
     AccessLevel = "readonly"
   })

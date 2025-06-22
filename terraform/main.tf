@@ -38,7 +38,7 @@ provider "aws" {
   default_tags {
     tags = {
       Project     = var.project_name
-      Environment = var.environment
+      Environment = "bootstrap"
       ManagedBy   = "terraform"
       Repository  = "azdo-aws-demo"
     }
@@ -63,13 +63,9 @@ resource "random_string" "suffix" {
 
 # Local values for consistent naming
 locals {
-  # Common resource naming
-  name_prefix = "${var.project_name}-${var.environment}"
-
   # Resource tags
   common_tags = {
     Project     = var.project_name
-    Environment = var.environment
     ManagedBy   = "terraform"
     Repository  = "azdo-aws-demo"
     CreatedBy   = "bootstrap-foundation"
