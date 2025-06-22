@@ -5,9 +5,9 @@
 # Azure DevOps Projects
 # =============================================================================
 
-# Bootstrap Infrastructure Project
-resource "azuredevops_project" "bootstrap" {
-  name               = var.azdo_project_bootstrap
+# Shared Infrastructure Project
+resource "azuredevops_project" "shared_infra" {
+  name               = var.azdo_project_shared_infra
   description        = "Shared infrastructure modules and team setup for ${var.project_name}"
   visibility         = "private"
   version_control    = "Git"
@@ -43,10 +43,10 @@ resource "azuredevops_project" "demo" {
 # Git Repositories (Use Auto-Created Default Repositories)
 # =============================================================================
 
-# Reference the default repository created automatically with the bootstrap project
-data "azuredevops_git_repository" "bootstrap_repo" {
-  project_id = azuredevops_project.bootstrap.id
-  name       = azuredevops_project.bootstrap.name
+# Reference the default repository created automatically with the shared-infra project
+data "azuredevops_git_repository" "shared_infra_repo" {
+  project_id = azuredevops_project.shared_infra.id
+  name       = azuredevops_project.shared_infra.name
 }
 
 # Reference the default repository created automatically with the demo project
@@ -61,7 +61,7 @@ data "azuredevops_git_repository" "demo_repo" {
 
 # Shared variable group for AWS configuration and IAM roles
 resource "azuredevops_variable_group" "aws_shared" {
-  project_id   = azuredevops_project.bootstrap.id
+  project_id   = azuredevops_project.shared_infra.id
   name         = "AWS-Foundation-Configuration"
   description  = "AWS configuration and IAM role ARNs for Azure DevOps integration"
   allow_access = true
@@ -112,17 +112,17 @@ resource "azuredevops_variable_group" "aws_shared" {
 # Team Access and Permissions (Simplified)
 # =============================================================================
 
-# Note: Team management will be handled by the bootstrap pipeline
+# Note: Team management will be handled by the shared-infra pipeline
 # This pre-bootstrap only creates the foundation for team access
 
 # =============================================================================
-# Single Bootstrap Pipeline
+# Single Shared Infrastructure Pipeline
 # =============================================================================
 
-# Single bootstrap pipeline that creates state backend and shared infrastructure
-resource "azuredevops_build_definition" "bootstrap_pipeline" {
-  project_id = azuredevops_project.bootstrap.id
-  name       = "01-Bootstrap-Foundation"
+# Single shared-infra pipeline that creates state backend and shared infrastructure
+resource "azuredevops_build_definition" "shared_infra_pipeline" {
+  project_id = azuredevops_project.shared_infra.id
+  name       = "01-Shared-Infra-Foundation"
   path       = "\\Foundation"
 
   ci_trigger {
@@ -131,9 +131,9 @@ resource "azuredevops_build_definition" "bootstrap_pipeline" {
 
   repository {
     repo_type   = "TfsGit"
-    repo_id     = data.azuredevops_git_repository.bootstrap_repo.id
-    branch_name = data.azuredevops_git_repository.bootstrap_repo.default_branch
-    yml_path    = "pipelines/bootstrap-foundation.yml"
+    repo_id     = data.azuredevops_git_repository.shared_infra_repo.id
+    branch_name = data.azuredevops_git_repository.shared_infra_repo.default_branch
+    yml_path    = "pipelines/shared-infra-foundation.yml"
   }
 
   variable_groups = [
@@ -154,13 +154,13 @@ resource "azuredevops_build_definition" "bootstrap_pipeline" {
 locals {
   next_steps = {
     step_1 = "Clone Azure DevOps repositories locally"
-    step_2 = "Add pipeline YAML files to bootstrap-infrastructure repo"
-    step_3 = "Run '01-Bootstrap-Foundation' pipeline to create state backend"
+    step_2 = "Add pipeline YAML files to shared-infra-infrastructure repo"
+    step_3 = "Run '01-Shared-Infra' pipeline to create shared infra resources"
     step_4 = "Add shared modules and security baseline"
     step_5 = "Create demo application pipelines"
 
     repositories = {
-      bootstrap = azuredevops_project.bootstrap.name
+      shared_infra = azuredevops_project.shared_infra.name
       demo      = azuredevops_project.demo.name
     }
 
@@ -178,4 +178,4 @@ locals {
 # =============================================================================
 
 # Note: Additional permissions and team management will be handled
-# by the bootstrap pipeline after the initial foundation is created
+# by the shared-infra pipeline after the initial foundation is created

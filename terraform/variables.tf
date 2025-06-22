@@ -72,16 +72,16 @@ variable "azdo_personal_access_token" {
   }
 }
 
-variable "azdo_project_bootstrap" {
-  description = "Name of the bootstrap infrastructure project"
+variable "azdo_project_shared_infra" {
+  description = "Name of the shared infrastructure project"
   type        = string
-  default     = "azdo-aws-bootstrap"
+  default     = "shared-infra"
 }
 
 variable "azdo_project_demo" {
   description = "Name of the demo application project"
   type        = string
-  default     = "azdo-aws-app-demo"
+  default     = "demo-app"
 }
 
 # =============================================================================
